@@ -1,0 +1,5 @@
+{
+  "source": "yfinance",
+  "interval": "1h",
+  "period": "1d"
+}
