@@ -1,1 +1,0 @@
-# databricks-projects-showcase
