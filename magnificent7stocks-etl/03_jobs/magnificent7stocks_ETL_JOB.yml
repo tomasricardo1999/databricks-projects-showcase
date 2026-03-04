@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    magnificent7stocks_ETL_JOB:
+      name: magnificent7stocks-ETL-JOB
+      schedule:
+        quartz_cron_expression: 13 0 21 * * ?
+        timezone_id: Europe/London
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: Bronze_Layer_Data_Ingestion
+          notebook_task:
+            notebook_path: /Workspace/Users/tomasricardo1999@gmail.com/databricks-projects-showcase/magnificent7stocks-etl/01_notebooks/01_bronze_layer
+            source: WORKSPACE
+      git_source:
+        git_url: https://dbc-627f5e09-febd.cloud.databricks.com/browse/folders/3268963177420605?o=7474658390108546
+        git_provider: gitHub
+        git_branch: main
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+          spec:
+            environment_version: "4"
+      performance_target: PERFORMANCE_OPTIMIZED
