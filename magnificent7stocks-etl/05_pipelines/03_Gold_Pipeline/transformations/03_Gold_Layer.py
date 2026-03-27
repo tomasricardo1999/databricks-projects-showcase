@@ -225,3 +225,56 @@ def gold_layer_value_at_risk():
         df.withColumn("VaR_95", F.expr("percentile_approx(return_pct, 0.05)").over(w))
           .withColumn("VaR_99", F.expr("percentile_approx(return_pct, 0.01)").over(w))
     )
+
+
+
+
+# =============================================================
+# ✅ Unified for Dashboard
+# =============================================================
+
+
+
+@dlt.table(
+    name="03_Gold_Layer_dashboard_unified",
+    comment="Unified dataset combining candles, returns, volatility and rolling averages for dashboard use."
+)
+def gold_layer_dashboard_unified():
+
+    candles = dlt.read("03_Gold_Layer_candles")
+    returns = dlt.read("03_Gold_Layer_hourly_returns")
+    vol = dlt.read("03_Gold_Layer_volatility")
+    rolling = dlt.read("03_Gold_Layer_rolling_averages")
+
+    unified = (
+        candles.alias("c")
+        .join(returns.alias("r"), ["ticker", "datetime"], "left")
+        .join(vol.alias("v"), ["ticker", "datetime"], "left")
+        .join(rolling.alias("ra"), ["ticker", "datetime"], "left")
+        .select(
+            "c.datetime",
+            "c.ticker",
+
+            # Candles (OHLCV)
+            "c.open",
+            "c.high",
+            "c.low",
+            "c.close",
+            "c.volume",
+
+            # Returns
+            "r.prev_close",
+            "r.price_change",
+            "r.return_pct",
+
+            # Volatility
+            "v.range",
+            "v.body_size",
+            "v.range_pct",
+
+            # Rolling moving averages
+            "ra.ma3h",
+            "ra.ma6h"
+        )
+    )
+    return unified

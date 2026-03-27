@@ -1,5 +1,5 @@
 {
   "source": "yfinance",
   "interval": "1h",
-  "period": "15d"
+  "period": "90d"
 }

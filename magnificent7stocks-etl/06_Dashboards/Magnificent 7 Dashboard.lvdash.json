@@ -1,0 +1,413 @@
+{
+  "datasets": [
+    {
+      "name": "bca79b6e",
+      "displayName": "`03_gold_layer_dashboard_unified`",
+      "queryLines": [
+        "SELECT * FROM workspace.magnificent7stocks.`03_gold_layer_dashboard_unified`"
+      ],
+      "catalog": "workspace",
+      "schema": "magnificent7stocks"
+    }
+  ],
+  "pages": [
+    {
+      "name": "f99fa388",
+      "displayName": "Global Data",
+      "layout": [
+        {
+          "widget": {
+            "name": "7df6c7ad",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size: 60px;line-height: 1.5;color: #077A9D;font-family: Arial;\">**Magnificent 7 Dashboard**</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "stock-close-price",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "ticker",
+                      "expression": "`ticker`"
+                    },
+                    {
+                      "name": "hourly(datetime)",
+                      "expression": "DATE_TRUNC(\"HOUR\", `datetime`)"
+                    },
+                    {
+                      "name": "close",
+                      "expression": "`close`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Stock Close Price ($)"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "hourly(datetime)",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "close",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "ticker",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": false
+                },
+                "extra": [
+                  {
+                    "fieldName": "ticker"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 3,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "207e45a2",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0ec6d1d4ca261621ad0e9dee5/datasets/01f129c4a19f1cffac572829155374d5_ticker",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "ticker",
+                      "expression": "`ticker`"
+                    },
+                    {
+                      "name": "ticker_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-multi-select",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "ticker",
+                    "queryName": "dashboards/01f129c0ec6d1d4ca261621ad0e9dee5/datasets/01f129c4a19f1cffac572829155374d5_ticker"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "ce81bf1c",
+            "queries": [
+              {
+                "name": "dashboards/01f129c0ec6d1d4ca261621ad0e9dee5/datasets/01f129c4a19f1cffac572829155374d5_datetime",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "datetime",
+                      "expression": "`datetime`"
+                    },
+                    {
+                      "name": "datetime_associativity",
+                      "expression": "COUNT_IF(`associative_filter_predicate_group`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true
+              },
+              "widgetType": "filter-date-range-picker",
+              "encodings": {
+                "fields": [
+                  {
+                    "fieldName": "datetime",
+                    "queryName": "dashboards/01f129c0ec6d1d4ca261621ad0e9dee5/datasets/01f129c4a19f1cffac572829155374d5_datetime"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "weekly-volume",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "ticker",
+                      "expression": "`ticker`"
+                    },
+                    {
+                      "name": "weekly(datetime)",
+                      "expression": "DATE_TRUNC(\"WEEK\", `datetime`)"
+                    },
+                    {
+                      "name": "sum(volume)",
+                      "expression": "SUM(`volume`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Weekly Volume"
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "weekly(datetime)",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "sum(volume)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "ticker",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true
+                },
+                "extra": [
+                  {
+                    "fieldName": "ticker"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 3,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "range-of-prices-hourly",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "datetime",
+                      "expression": "`datetime`"
+                    },
+                    {
+                      "name": "ticker",
+                      "expression": "`ticker`"
+                    },
+                    {
+                      "name": "range",
+                      "expression": "`range`"
+                    },
+                    {
+                      "name": "high",
+                      "expression": "`high`"
+                    },
+                    {
+                      "name": "low",
+                      "expression": "`low`"
+                    },
+                    {
+                      "name": "range_pct",
+                      "expression": "`range_pct`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Range of Prices Hourly"
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "datetime"
+                  },
+                  {
+                    "fieldName": "ticker"
+                  },
+                  {
+                    "fieldName": "range"
+                  },
+                  {
+                    "fieldName": "high"
+                  },
+                  {
+                    "fieldName": "low"
+                  },
+                  {
+                    "fieldName": "range_pct"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "ma6h",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "bca79b6e",
+                  "fields": [
+                    {
+                      "name": "daily(datetime)",
+                      "expression": "DATE_TRUNC(\"DAY\", `datetime`)"
+                    },
+                    {
+                      "name": "sum(ma6h)",
+                      "expression": "SUM(`ma6h`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "DATE_TRUNC(\"DAY\", `datetime`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "ma6h"
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "sum(ma6h)"
+                },
+                "target": {
+                  "fieldName": "sum(ma6h)",
+                  "period": {
+                    "type": "relative-to-value-period",
+                    "offset": -1
+                  },
+                  "change": {
+                    "type": "percent"
+                  }
+                },
+                "period": {
+                  "fieldName": "daily(datetime)"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
