@@ -11,14 +11,37 @@ resources:
           notebook_task:
             notebook_path: /Workspace/Users/tomasricardo1999@gmail.com/databricks-projects-showcase/magnificent7stocks-etl/01_notebooks/01_bronze_layer
             source: WORKSPACE
+          environment_key: default
+        - task_key: Silver_Layer_Data_Cleaning
+          depends_on:
+            - task_key: Bronze_Layer_Data_Ingestion
+          notebook_task:
+            notebook_path: /Workspace/Users/tomasricardo1999@gmail.com/databricks-projects-showcase/magnificent7stocks-etl/01_notebooks/02_silver_layer
+            source: WORKSPACE
+          environment_key: default
+        - task_key: Gold_Layer_Data_Treatment
+          depends_on:
+            - task_key: Silver_Layer_Data_Cleaning
+          pipeline_task:
+            pipeline_id: 5862f7b5-d331-40f1-800d-d2d966c6b7c0
+            full_refresh: false
+        - task_key: Dashboard_Refresh
+          depends_on:
+            - task_key: Gold_Layer_Data_Treatment
+          dashboard_task:
+            subscription:
+              subscribers:
+                - user_name: tomasricardo1999@gmail.com
+            warehouse_id: 9c1eec8298fa8f7c
+            dashboard_id: 01f129c0ec6d1d4ca261621ad0e9dee5
       git_source:
-        git_url: https://dbc-627f5e09-febd.cloud.databricks.com/browse/folders/3268963177420605?o=7474658390108546
+        git_url: https://github.com/tomasricardo1999/databricks-projects-showcase/tree/main/magnificent7stocks-etl/03_jobs
         git_provider: gitHub
-        git_branch: main
+        git_commit: main
       queue:
         enabled: true
       environments:
-        - environment_key: Default
+        - environment_key: default
           spec:
             environment_version: "4"
       performance_target: PERFORMANCE_OPTIMIZED
